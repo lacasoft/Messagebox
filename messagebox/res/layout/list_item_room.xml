@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/roomImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="5dp"
+        android:src="@drawable/ic_room"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/roomName"
+        android:layout_toRightOf="@+id/roomImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textSize="20sp"
+        android:text="@string/chat_title" />
+    <TextView
+        android:id="@+id/lastMessage"
+        android:layout_below="@+id/roomName"
+        android:layout_toRightOf="@+id/roomImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textSize="20sp"
+        android:text="@string/chat_last_msg" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/chat_type"
+        android:id="@+id/textViewGroupType"
+        android:layout_below="@+id/lastMessage"
+        android:layout_toRightOf="@+id/roomImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/chat_date_send_msg"
+        android:id="@+id/textViewDateSent"
+        android:layout_alignTop="@+id/textViewGroupType"
+        android:layout_toRightOf="@+id/textViewGroupType"
+        android:layout_toEndOf="@+id/textViewGroupType"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/chat_unread_messages"
+        android:id="@+id/textViewUnread"
+        android:layout_toEndOf="@+id/textViewDateSent"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/textViewDateSent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp" />
+
+</RelativeLayout>

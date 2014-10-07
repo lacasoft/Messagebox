@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="debug" >
+        <source path="C:\Users\LACA\workspace\ebay POD\Messagebox\Chat\messagebox\libraries\pull-to-refresh\build\intermediates\bundles\debug\assets" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="C:\Users\LACA\workspace\ebay POD\Messagebox\Chat\messagebox\libraries\pull-to-refresh\src\androidTest\assets" />
+    </dataSet>
+
+</merger>

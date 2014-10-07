@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Messagebox</string>
+    <string name="hello_world">Hello World!!!</string>
+
+    <!-- QuickBlox Parameters -->
+    <string name="quick_id">15112</string>
+    <string name="quick_auth_key">CfKAHRFpjJjpKAS</string>
+    <string name="quick_auth_secret">E4qwTqey5Sgtv5r</string>
+    <string name="quick_user_name">lacasoft</string>
+    <string name="quick_user_pass">TestMsG2</string>
+
+    <!-- Chat Info -->
+    <string name="chat_select">Seleccione un Chat</string>
+    <string name="chat_new">Nuevo Chat</string>
+    <string name="chat_info_msg">Info Chat</string>
+    <string name="chat_btn_create">Crear Chat</string>
+    <string name="chat_title">Titulo del Chat</string>
+    <string name="chat_type">Tipo de Chat</string>
+    <string name="chat_last_msg">Ultimo Mensaje</string>
+    <string name="chat_date_send_msg">Fecha de Envio</string>
+    <string name="chat_is_read_msg">Fue leido</string>
+    <string name="chat_btn_send">Enviar</string>
+    <string name="chat_text_msg">Escribir mensaje</string>
+    <string name="chat_me_title">Yo</string>
+    <string name="chat_friend_title">Amigo</string>
+    <string name="chat_unread_messages">Nuevos</string>
+
+    <!-- User Info -->
+    <string name="user_select">Seleccione usuarios</string>
+    <string name="user_name">Usuario</string>
+    <string name="user_pass">Clave</string>
+    <string name="chat_btn_login">Entrar</string>
+    <string name="chat_btn_register">Registrar</string>
+
+    <!-- Alerts Errors -->
+    <string name="alert_error_session">Error al crear la  sesion: </string>
+    <string name="alert_error_login">Error al intentar loguear: </string>
+    <string name="alert_error_release_chat">Error al entregar chat: </string>
+    <string name="alert_error_join_group_chat">Error al entrar al chat: </string>
+    <string name="alert_error_send_message">Error al enviar el mensaje: </string>
+    <string name="alert_error_load_chat_history">Error al recuperar el historial: </string>
+    <string name="alert_error_get_occupants">Error al obtener los integrantes: </string>
+    <string name="alert_error_get_dialogs">Error al obtener los chats: </string>
+
+    <!-- Alerts Success-->
+    <string name="alert_success_join">Union Exitosa: </string>
+
+</resources>
