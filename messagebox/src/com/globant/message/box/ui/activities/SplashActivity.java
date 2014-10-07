@@ -46,8 +46,8 @@ public class SplashActivity extends Activity {
         this.AUTH_KEY = getApplicationContext().getResources().getString(R.string.quick_auth_key);
         this.AUTH_SECRET = getApplicationContext().getResources().getString(R.string.quick_auth_secret);
 
-        this.USER_LOGIN = "tester"; //getApplicationContext().getResources().getString(R.string.quick_user_name);
-        this.USER_PASSWORD = "12345678"; //getApplicationContext().getResources().getString(R.string.quick_user_pass);
+        this.USER_LOGIN = getApplicationContext().getResources().getString(R.string.quick_user_name); //"tester"; //
+        this.USER_PASSWORD = getApplicationContext().getResources().getString(R.string.quick_user_pass); //"12345678"; //
         // Init Chat
         //
         QBChatService.setDebugEnabled(true);
