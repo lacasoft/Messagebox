@@ -90,7 +90,7 @@ public class DialogsActivity extends Activity {
                 });
             }
 
-            @Override
+            @Override 
             public void onError(List<String> errors) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(DialogsActivity.this);
                 dialog.setMessage(getApplicationContext().getResources().getString(R.string.alert_error_get_dialogs) + errors).create().show();
