@@ -3,17 +3,22 @@ package com.globant.message.box.ui.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.internal.module.custom.request.QBCustomObjectRequestBuilder;
@@ -184,6 +189,14 @@ public class ChatActivity extends Activity {
                 }
 
                 progressBar.setVisibility(View.GONE);
+
+                messagesContainer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> av, View v, int pos, long id) {
+                        return onLongListItemClick(v,pos,id);
+                    }
+                });
+                //registerForContextMenu(messagesContainer);
             }
 
             @Override
@@ -209,6 +222,63 @@ public class ChatActivity extends Activity {
     private void scrollDown() {
         messagesContainer.setSelection(messagesContainer.getCount() - 1);
     }
+
+    private void scrollUp() {
+        messagesContainer.setSelection(messagesContainer.getCount() + 1);
+    }
+
+    protected boolean onLongListItemClick(View v, int pos, long id) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle(getApplicationContext().getResources().getString(R.string.chat_ac_title));
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(getApplicationContext().getResources().getString(R.string.alert_info_title_delete))
+                .setCancelable(false)
+                .setPositiveButton(getApplicationContext().getResources().getString(R.string.alert_info_btn_yes),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        Toast.makeText(getApplicationContext(), "To Do " + getApplicationContext().getResources().getString(R.string.alert_info_title_delete), Toast.LENGTH_LONG).show();
+                    }
+                })
+                .setNegativeButton(getApplicationContext().getResources().getString(R.string.alert_info_btn_no),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
+        Log.i(TAG, "onLongListItemClick id=" + id);
+        return true;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+
+        menu.setHeaderTitle(getApplicationContext().getResources().getString(R.string.chat_ac_title));
+        menu.add(0, (int) info.id,info.position,getApplicationContext().getResources().getString(R.string.chat_ac_delete));
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        super.onContextItemSelected(item);
+
+        if(item.getTitle().equals(getApplicationContext().getResources().getString(R.string.chat_ac_delete))) {
+            Toast.makeText(this, "To Do " + getApplicationContext().getResources().getString(R.string.chat_ac_delete), Toast.LENGTH_LONG).show();
+        }
+        return true;
+    };
 
     public static enum Mode {PRIVATE, GROUP}
 }

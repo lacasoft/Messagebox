@@ -16,6 +16,8 @@ import com.globant.message.box.R;
 
 import org.jivesoftware.smack.SmackException;
 
+import com.globant.message.box.ui.fragments.DialogsFragment;
+
 import java.util.List;
 
 public class SplashActivity extends Activity {

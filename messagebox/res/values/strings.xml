@@ -32,6 +32,15 @@
     <string name="chat_btn_login">Entrar</string>
     <string name="chat_btn_register">Registrar</string>
 
+    <!-- Chat Actions -->
+    <string name="chat_ac_title">Acciones</string>
+    <string name="chat_ac_delete">Eliminar</string>
+
+    <!-- Alerts Info -->
+    <string name="alert_info_title_delete">Deseas Eliminar?</string>
+    <string name="alert_info_btn_yes">Si</string>
+    <string name="alert_info_btn_no">No</string>
+
     <!-- Alerts Errors -->
     <string name="alert_error_session">Error al crear la  sesion: </string>
     <string name="alert_error_login">Error al intentar loguear: </string>

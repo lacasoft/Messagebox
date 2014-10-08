@@ -1,9 +1,12 @@
-package com.globant.message.box.ui.activities;
+package com.globant.message.box.ui.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,8 +14,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import com.globant.message.box.MessageboxSingleton;
+import com.globant.message.box.R;
+import com.globant.message.box.ui.activities.ChatActivity;
+import com.globant.message.box.ui.activities.NewDialogActivity;
+import com.globant.message.box.ui.adapters.DialogsAdapter;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.internal.core.request.QBPagedRequestBuilder;
 import com.quickblox.internal.module.custom.request.QBCustomObjectRequestBuilder;
@@ -21,21 +28,14 @@ import com.quickblox.module.chat.model.QBDialog;
 import com.quickblox.module.chat.model.QBDialogType;
 import com.quickblox.module.users.QBUsers;
 import com.quickblox.module.users.model.QBUser;
-import com.globant.message.box.MessageboxSingleton;
-import com.globant.message.box.R;
-import com.globant.message.box.ui.adapters.DialogsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DialogsActivity extends Activity {
+public class DialogsFragment extends FragmentActivity {
 
     private ListView dialogsListView;
     private ProgressBar progressBar;
-
-    TextView countTotal;
-
-    private int total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class DialogsActivity extends Activity {
 
         dialogsListView = (ListView) findViewById(R.id.roomsList);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        countTotal = (TextView) findViewById(R.id.textViewCountTotal);
+
 
         // get dialogs
         //
@@ -58,7 +58,7 @@ public class DialogsActivity extends Activity {
                 // collect all occupants ids
                 //
                 List<Integer> usersIDs = new ArrayList<Integer>();
-                for(QBDialog dialog : dialogs){
+                for (QBDialog dialog : dialogs) {
                     usersIDs.addAll(dialog.getOccupants());
                 }
 
@@ -74,7 +74,7 @@ public class DialogsActivity extends Activity {
 
                         // Save users
                         //
-                        ((MessageboxSingleton)getApplication()).setDialogsUsers(users);
+                        ((MessageboxSingleton) getApplication()).setDialogsUsers(users);
 
                         // build list view
                         //
@@ -83,7 +83,7 @@ public class DialogsActivity extends Activity {
 
                     @Override
                     public void onError(List<String> errors) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(DialogsActivity.this);
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(DialogsFragment.this);
                         dialog.setMessage(getApplicationContext().getResources().getString(R.string.alert_error_get_occupants) + errors).create().show();
                     }
 
@@ -92,17 +92,15 @@ public class DialogsActivity extends Activity {
 
             @Override
             public void onError(List<String> errors) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(DialogsActivity.this);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(DialogsFragment.this);
                 dialog.setMessage(getApplicationContext().getResources().getString(R.string.alert_error_get_dialogs) + errors).create().show();
             }
         });
-
-        countTotal.setText("Total:" + total);
     }
 
 
     void buildListView(List<QBDialog> dialogs){
-        final DialogsAdapter adapter = new DialogsAdapter(dialogs, DialogsActivity.this);
+        final DialogsAdapter adapter = new DialogsAdapter(dialogs, DialogsFragment.this);
         dialogsListView.setAdapter(adapter);
 
         progressBar.setVisibility(View.GONE);
@@ -128,11 +126,9 @@ public class DialogsActivity extends Activity {
 
                 // Open chat activity
                 //
-                ChatActivity.start(DialogsActivity.this, bundle);
+                ChatActivity.start(DialogsFragment.this, bundle);
             }
         });
-
-        total = adapter.getTotalUnread();
     }
 
     @Override
@@ -149,13 +145,11 @@ public class DialogsActivity extends Activity {
 
             // go to New Dialog activity
             //
-            Intent intent = new Intent(DialogsActivity.this, NewDialogActivity.class);
+            Intent intent = new Intent(DialogsFragment.this, NewDialogActivity.class);
             startActivity(intent);
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

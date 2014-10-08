@@ -3,6 +3,7 @@ package com.globant.message.box.ui.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +71,17 @@ public class ChatAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        setAlignment(holder, chatMessage.getSenderId() == ((MessageboxSingleton)context.getApplication()).getCurrentUser().getId());
+        boolean isCurrent = false;
+
+        if (chatMessage.getSenderId() != null) {
+
+            int who = chatMessage.getSenderId();
+            int whoCurrent = ((MessageboxSingleton) context.getApplication()).getCurrentUser().getId();
+
+            isCurrent = who == whoCurrent ? false : true;
+        }
+
+        setAlignment(holder, isCurrent);
 
         holder.txtMessage.setText(chatMessage.getBody());
 
@@ -85,6 +96,10 @@ public class ChatAdapter extends BaseAdapter {
 
     public void add(QBMessage message) {
         chatMessages.add(message);
+    }
+
+    public void remove(int positions) {
+        // To DO
     }
 
     public void add(List<QBMessage> messages) {
@@ -143,7 +158,12 @@ public class ChatAdapter extends BaseAdapter {
 
     private String getTimeText(QBMessage message) {
         if (message instanceof QBChatHistoryMessage){
-            return DateFormat.format(DATE_FORMAT, ((QBChatHistoryMessage)message).getDateSent()).toString();
+            //Log.i("Chat Activity", "id: " + ((QBChatHistoryMessage)message).getDateSent());
+
+            long time = ((QBChatHistoryMessage)message).getDateSent() * (long) 1000;
+            Date date = new Date(time);
+
+            return DateFormat.format(DATE_FORMAT, date).toString();
         }
         return DateFormat.format(DATE_FORMAT, new Date().getTime()).toString();
     }

@@ -27,6 +27,8 @@ public class DialogsAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Activity ctx;
 
+    private int totalUnread = 0;
+
     public DialogsAdapter(List<QBDialog> dataSource, Activity ctx) {
         this.dataSource = dataSource;
         this.inflater = LayoutInflater.from(ctx);
@@ -50,6 +52,10 @@ public class DialogsAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         return dataSource.size();
+    }
+
+    public int getTotalUnread() {
+        return this.totalUnread;
     }
 
     @Override
@@ -89,10 +95,20 @@ public class DialogsAdapter extends BaseAdapter {
         holder.lastMessage.setText(dialog.getLastMessage());
         holder.groupType.setText(dialog.getType().toString());
 
-        holder.dateSent.setText(DateFormat.format(DATE_FORMAT, dialog.getLastMessageDateSent()).toString());
+        holder.dateSent.setText(getTimeText(dialog.getLastMessageDateSent()).toString());
         holder.unread.setText(dialog.getUnreadMessageCount().toString());
 
+        this.totalUnread += dialog.getUnreadMessageCount();
+
         return convertView;
+    }
+
+    private String getTimeText(long dateTime) {
+
+            long time = dateTime * (long) 1000;
+            Date date = new Date(time);
+
+            return DateFormat.format(DATE_FORMAT, date).toString();
     }
 
     private static class ViewHolder{
