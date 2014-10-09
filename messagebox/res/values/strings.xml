@@ -27,6 +27,7 @@
 
     <!-- User Info -->
     <string name="user_select">Seleccione usuarios</string>
+    <string name="user_new">Nuevo Usuario</string>
     <string name="user_name">Usuario</string>
     <string name="user_pass">Clave</string>
     <string name="chat_btn_login">Entrar</string>

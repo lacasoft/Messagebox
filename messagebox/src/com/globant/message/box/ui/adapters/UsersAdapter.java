@@ -1,5 +1,6 @@
 package com.globant.message.box.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.globant.message.box.MessageboxSingleton;
+import com.quickblox.module.chat.QBChatService;
 import com.quickblox.module.users.model.QBUser;
 import com.globant.message.box.R;
 
@@ -47,6 +50,7 @@ public class UsersAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item_user, null);
             holder = new ViewHolder();
@@ -56,21 +60,33 @@ public class UsersAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
         final QBUser user = dataSource.get(position);
+
+        int whoCurrent = ((MessageboxSingleton) inflater.getContext().getApplicationContext()).getCurrentUser().getId();
+
         if (user != null) {
             holder.login.setText(user.getLogin());
-            holder.add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if ((((CheckBox) v).isChecked())) {
-                        selected.add(user);
-                    } else {
-                        selected.remove(user);
+
+            if(user.getId() != whoCurrent) {
+                holder.add.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if ((((CheckBox) v).isChecked())) {
+                            selected.add(user);
+                        } else {
+                            selected.remove(user);
+                        }
                     }
-                }
-            });
-            holder.add.setChecked(selected.contains(user));
+                });
+                holder.add.setChecked(selected.contains(user));
+            } else {
+                holder.login.setText(user.getLogin() + " (" + inflater.getContext().getApplicationContext().getResources().getString(R.string.chat_me_title) + ")");
+
+                holder.add.setVisibility(View.GONE);
+            }
         }
+
         return convertView;
     }
 

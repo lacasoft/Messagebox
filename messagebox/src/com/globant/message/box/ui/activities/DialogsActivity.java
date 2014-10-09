@@ -49,6 +49,7 @@ public class DialogsActivity extends Activity {
         // get dialogs
         //
         QBCustomObjectRequestBuilder customObjectRequestBuilder = new QBCustomObjectRequestBuilder();
+
         customObjectRequestBuilder.setPagesLimit(100);
 
         QBChatService.getChatDialogs(null, customObjectRequestBuilder, new QBEntityCallbackImpl<ArrayList<QBDialog>>() {
@@ -58,9 +59,13 @@ public class DialogsActivity extends Activity {
                 // collect all occupants ids
                 //
                 List<Integer> usersIDs = new ArrayList<Integer>();
+
                 for(QBDialog dialog : dialogs){
                     usersIDs.addAll(dialog.getOccupants());
+                    total += dialog.getUnreadMessageCount();
                 }
+
+                countTotal.setText("Total:" + total);
 
                 // Get all occupants info
                 //
@@ -96,8 +101,6 @@ public class DialogsActivity extends Activity {
                 dialog.setMessage(getApplicationContext().getResources().getString(R.string.alert_error_get_dialogs) + errors).create().show();
             }
         });
-
-        countTotal.setText("Total:" + total);
     }
 
 
@@ -132,20 +135,19 @@ public class DialogsActivity extends Activity {
             }
         });
 
-        total = adapter.getTotalUnread();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.rooms, menu);
+        inflater.inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_add) {
+        if (id == R.id.action_add_chat) {
 
             // go to New Dialog activity
             //
@@ -153,9 +155,16 @@ public class DialogsActivity extends Activity {
             startActivity(intent);
             finish();
             return true;
-        }
+        } /*else if (id == R.id.action_add_user) {
+
+            // go to New Dialog activity
+            //
+            Intent intent = new Intent(DialogsActivity.this, RegistrationActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }*/
         return super.onOptionsItemSelected(item);
     }
-
 
 }

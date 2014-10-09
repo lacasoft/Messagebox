@@ -27,8 +27,6 @@ public class DialogsAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Activity ctx;
 
-    private int totalUnread = 0;
-
     public DialogsAdapter(List<QBDialog> dataSource, Activity ctx) {
         this.dataSource = dataSource;
         this.inflater = LayoutInflater.from(ctx);
@@ -54,10 +52,6 @@ public class DialogsAdapter extends BaseAdapter {
         return dataSource.size();
     }
 
-    public int getTotalUnread() {
-        return this.totalUnread;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
@@ -80,6 +74,7 @@ public class DialogsAdapter extends BaseAdapter {
         // set data
         //
         QBDialog dialog = dataSource.get(position);
+
         if(dialog.getType().equals(QBDialogType.GROUP)){
             holder.name.setText(dialog.getName());
         }else{
@@ -87,6 +82,7 @@ public class DialogsAdapter extends BaseAdapter {
             //
             Integer opponentID = ((MessageboxSingleton)ctx.getApplication()).getOpponentIDForPrivateDialog(dialog);
             QBUser user = ((MessageboxSingleton)ctx.getApplication()).getDialogsUsers().get(opponentID);
+
             if(user != null){
                 holder.name.setText(user.getLogin() == null ? user.getFullName() : user.getLogin());
             }
@@ -98,18 +94,17 @@ public class DialogsAdapter extends BaseAdapter {
         holder.dateSent.setText(getTimeText(dialog.getLastMessageDateSent()).toString());
         holder.unread.setText(dialog.getUnreadMessageCount().toString());
 
-        this.totalUnread += dialog.getUnreadMessageCount();
-
         return convertView;
     }
 
     private String getTimeText(long dateTime) {
-
             long time = dateTime * (long) 1000;
             Date date = new Date(time);
 
             return DateFormat.format(DATE_FORMAT, date).toString();
     }
+
+
 
     private static class ViewHolder{
         TextView name;

@@ -16,8 +16,6 @@ import com.globant.message.box.R;
 
 import org.jivesoftware.smack.SmackException;
 
-import com.globant.message.box.ui.fragments.DialogsFragment;
-
 import java.util.List;
 
 public class SplashActivity extends Activity {
@@ -53,12 +51,14 @@ public class SplashActivity extends Activity {
         // Init Chat
         //
         QBChatService.setDebugEnabled(true);
+
         QBSettings.getInstance().fastConfigInit(this.APP_ID, this.AUTH_KEY, this.AUTH_SECRET);
+
         if (!QBChatService.isInitialized()) {
             QBChatService.init(this);
         }
-        chatService = QBChatService.getInstance();
 
+        chatService = QBChatService.getInstance();
 
         // create QB user
         //
