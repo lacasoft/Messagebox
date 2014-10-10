@@ -60,7 +60,12 @@ public class UsersFragment extends Fragment implements QBEntityCallback<ArrayLis
                 // Create new group dialog
                 //
                 QBDialog dialogToCreate = new QBDialog();
+
+                String name_product_ebay = "New Ebay Product";
+
                 dialogToCreate.setName(usersListToChatName());
+                //dialogToCreate.setName(name_product_ebay);
+
 
                 if(usersAdapter.getSelected().size() == 1){
                     dialogToCreate.setType(QBDialogType.PRIVATE);

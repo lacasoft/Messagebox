@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -22,9 +24,12 @@ import android.widget.Toast;
 
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.internal.module.custom.request.QBCustomObjectRequestBuilder;
+import com.quickblox.module.chat.QBChat;
 import com.quickblox.module.chat.QBChatService;
 import com.quickblox.module.chat.model.QBChatHistoryMessage;
+import com.quickblox.module.chat.model.QBChatMarkersExtension;
 import com.quickblox.module.chat.model.QBChatMessage;
+import com.quickblox.module.chat.model.QBChatMessageExtension;
 import com.quickblox.module.chat.model.QBDialog;
 import com.quickblox.module.chat.model.QBMessage;
 import com.globant.message.box.MessageboxSingleton;
@@ -33,9 +38,11 @@ import com.globant.message.box.core.ChatManager;
 import com.globant.message.box.core.GroupChatManagerImpl;
 import com.globant.message.box.core.PrivateChatManagerImpl;
 import com.globant.message.box.ui.adapters.ChatAdapter;
+import com.quickblox.module.custom.model.QBCustomObject;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.DefaultPacketExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +54,7 @@ public class ChatActivity extends Activity {
     public static final String EXTRA_MODE = "mode";
     public static final String EXTRA_DIALOG = "dialog";
     private final String PROPERTY_SAVE_TO_HISTORY = "save_to_history";
+    private final String PROPERTY_ID_PRODUCT_EBAY = "id_product_ebay";
 
     private EditText messageEditText;
     private ListView messagesContainer;
@@ -141,10 +149,27 @@ public class ChatActivity extends Activity {
                 break;
         }
 
+        messageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                enableSubmitIfReady();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String messageText = messageEditText.getText().toString();
+                String idProducttEbay = "1234567890";
+
                 if (TextUtils.isEmpty(messageText)) {
                     return;
                 }
@@ -154,6 +179,7 @@ public class ChatActivity extends Activity {
                 QBChatMessage chatMessage = new QBChatMessage();
                 chatMessage.setBody(messageText);
                 chatMessage.setProperty(PROPERTY_SAVE_TO_HISTORY, "1");
+                chatMessage.setProperty(PROPERTY_ID_PRODUCT_EBAY, idProducttEbay);
 
                 try {
                     chat.sendMessage(chatMessage);
@@ -170,6 +196,17 @@ public class ChatActivity extends Activity {
                 }
             }
         });
+    }
+
+    public void enableSubmitIfReady() {
+
+        boolean isReady = messageEditText.getText().toString().length()>0;
+
+        if (isReady) {
+            sendButton.setEnabled(true);
+        } else {
+            sendButton.setEnabled(false);
+        }
     }
 
     private void loadChatHistory(){

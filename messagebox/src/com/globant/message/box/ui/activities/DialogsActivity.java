@@ -155,7 +155,7 @@ public class DialogsActivity extends Activity {
             startActivity(intent);
             finish();
             return true;
-        } /*else if (id == R.id.action_add_user) {
+        } else if (id == R.id.action_add_user) {
 
             // go to New Dialog activity
             //
@@ -163,7 +163,7 @@ public class DialogsActivity extends Activity {
             startActivity(intent);
             finish();
             return true;
-        }*/
+        }
         return super.onOptionsItemSelected(item);
     }
 

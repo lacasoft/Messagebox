@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethod;
@@ -14,6 +16,8 @@ import android.widget.EditText;
 import com.globant.message.box.MessageboxSingleton;
 import com.globant.message.box.R;
 import com.quickblox.core.QBCallback;
+import com.quickblox.core.QBCallbackImpl;
+import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.result.Result;
 import com.quickblox.internal.core.exception.QBResponseException;
@@ -60,6 +64,21 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading");
 
+        passwordEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                enableSubmitIfReady();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
         smackAndroid = SmackAndroid.init(this);
 
         if (!QBChatService.isInitialized()) {
@@ -67,6 +86,17 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         }
 
         chatService = QBChatService.getInstance();
+    }
+
+    public void enableSubmitIfReady() {
+
+        boolean isReady = passwordEdit.getText().toString().length()>7;
+
+        if (isReady) {
+            registerButton.setEnabled(true);
+        } else {
+            registerButton.setEnabled(false);
+        }
     }
 
     @Override
@@ -84,7 +114,8 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
         progressDialog.show();
 
-        loginToChat(user);
+        //QBUsers.signUpSignInTask(user, (QBEntityCallback<QBUser>) this);
+        registerToChat(user);
     }
 
     @Override
@@ -95,37 +126,45 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         finish();
     }
 
-    private void loginToChat(final QBUser user){
-
-        runOnUiThread(new Runnable() {
+    private void registerToChat(final QBUser user)
+    {
+        // register user
+        QBUsers.signUpSignInTask(user, new QBEntityCallback() {
             @Override
-            public void run() {
-                chatService.login(user, new QBEntityCallbackImpl() {
-                    @Override
-                    public void onSuccess() {
+            public void onSuccess(Object o, Bundle bundle) {
+                loginToChat(user);
+            }
 
-                        // Start sending presences
-                        //
-                        try {
-                            chatService.startAutoSendPresence(AUTO_PRESENCE_INTERVAL_IN_SECONDS);
-                        } catch (SmackException.NotLoggedInException e) {
-                            e.printStackTrace();
-                        }
+            @Override
+            public void onSuccess() {
 
-                        // go to Dialogs screen
-                        //
-                        Intent intent = new Intent(RegistrationActivity.this, DialogsActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
+            }
 
-                    @Override
-                    public void onError(List errors) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(RegistrationActivity.this);
-                        dialog.setMessage(getApplicationContext().getResources().getString(R.string.alert_error_login) + errors).create().show();
-                    }
-                });
+            @Override
+            public void onError(List list) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(RegistrationActivity.this);
+                dialog.setMessage(getApplicationContext().getResources().getString(R.string.alert_error_login) + list).create().show();
+
+                progressDialog.dismiss();
             }
         });
     }
+
+    private void loginToChat(final QBUser user){
+        ((MessageboxSingleton) getApplication()).setCurrentUser(user);
+
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+
+        Log.i(TAG, "success when login");
+        Intent i = new Intent();
+        setResult(RESULT_OK, i);
+
+        //
+        Intent intent = new Intent(RegistrationActivity.this, DialogsActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 }
