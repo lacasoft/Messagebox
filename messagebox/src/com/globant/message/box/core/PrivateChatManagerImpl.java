@@ -62,7 +62,7 @@ public class PrivateChatManagerImpl extends QBMessageListenerImpl<QBPrivateChat>
 
     @Override
     public void processError(QBPrivateChat chat, QBChatException error, QBChatMessage originChatMessage){
-
+        Log.w(TAG, "processError: " + error);
     }
 
     @Override
@@ -73,5 +73,10 @@ public class PrivateChatManagerImpl extends QBMessageListenerImpl<QBPrivateChat>
         }
 
         Log.w(TAG, "private chat created: " + incomingPrivateChat.getParticipant() + ", createdLocally:" + createdLocally);
+    }
+
+    @Override
+    public void processMessageDelivered(QBPrivateChat sender, String messageID) {
+
     }
 }
