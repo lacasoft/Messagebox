@@ -6,8 +6,8 @@
     <string name="quick_id">15112</string>
     <string name="quick_auth_key">CfKAHRFpjJjpKAS</string>
     <string name="quick_auth_secret">E4qwTqey5Sgtv5r</string>
-    <string name="quick_user_name">lacasoft</string>
-    <string name="quick_user_pass">TestMsG2</string>
+    <string name="quick_user_name">joan.alonso</string>
+    <string name="quick_user_pass">gl0b4nt.p4ssw0rd</string>
 
     <!-- Chat Info -->
     <string name="chat_select">Seleccione un Chat</string>

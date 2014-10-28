@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="C:\Users\LACA\workspace\ebay POD\Messagebox\Chat\messagebox\libraries\pull-to-refresh\src\main\assets" />
+        <source path="C:\Users\jmalonsos\Desktop\RepositoriosGit\Messagebox\messagebox\libraries\pull-to-refresh\src\main\assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="C:\Users\LACA\workspace\ebay POD\Messagebox\Chat\messagebox\libraries\pull-to-refresh\src\debug\assets" />
+        <source path="C:\Users\jmalonsos\Desktop\RepositoriosGit\Messagebox\messagebox\libraries\pull-to-refresh\src\debug\assets" />
     </dataSet>
 
 </merger>

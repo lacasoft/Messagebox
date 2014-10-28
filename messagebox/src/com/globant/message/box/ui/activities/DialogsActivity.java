@@ -3,16 +3,25 @@ package com.globant.message.box.ui.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.PointF;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.globant.message.box.MessageboxSingleton;
+import com.globant.message.box.R;
+import com.globant.message.box.ui.adapters.DialogsAdapter;
+import com.globant.message.box.ui.listener.SwipeListener;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.internal.core.request.QBPagedRequestBuilder;
 import com.quickblox.internal.module.custom.request.QBCustomObjectRequestBuilder;
@@ -21,30 +30,35 @@ import com.quickblox.module.chat.model.QBDialog;
 import com.quickblox.module.chat.model.QBDialogType;
 import com.quickblox.module.users.QBUsers;
 import com.quickblox.module.users.model.QBUser;
-import com.globant.message.box.MessageboxSingleton;
-import com.globant.message.box.R;
-import com.globant.message.box.ui.adapters.DialogsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DialogsActivity extends Activity {
-
-    private ListView dialogsListView;
-    private ProgressBar progressBar;
-
-    TextView countTotal;
+    private static final String TAG = DialogsActivity.class.getSimpleName();
 
     private int total;
+    private TextView countTotal;
+    private DialogsAdapter adapter;
+    private ProgressBar progressBar;
+    private RecyclerView dialogsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialogs_activity);
 
-        dialogsListView = (ListView) findViewById(R.id.roomsList);
+        dialogsListView = (RecyclerView) findViewById(R.id.roomsList);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         countTotal = (TextView) findViewById(R.id.textViewCountTotal);
+
+        adapter = new DialogsAdapter(new ArrayList<QBDialog>(), DialogsActivity.this);
+        dialogsListView.setAdapter(adapter);
+
+        progressBar.setVisibility(View.GONE);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        dialogsListView.setLayoutManager(layoutManager);
 
         // get dialogs
         //
@@ -101,40 +115,15 @@ public class DialogsActivity extends Activity {
                 dialog.setMessage(getApplicationContext().getResources().getString(R.string.alert_error_get_dialogs) + errors).create().show();
             }
         });
+
+        // Evento de swipe, scroll or click.
+        dialogsListView.addOnItemTouchListener(new SwipeListener());
     }
 
 
-    void buildListView(List<QBDialog> dialogs){
-        final DialogsAdapter adapter = new DialogsAdapter(dialogs, DialogsActivity.this);
-        dialogsListView.setAdapter(adapter);
-
-        progressBar.setVisibility(View.GONE);
-
-        // choose dialog
-        //
-        dialogsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                QBDialog selectedDialog = (QBDialog)adapter.getItem(position);
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ChatActivity.EXTRA_DIALOG, (QBDialog)adapter.getItem(position));
-
-                // group
-                if(selectedDialog.getType().equals(QBDialogType.GROUP)){
-                    bundle.putSerializable(ChatActivity.EXTRA_MODE, ChatActivity.Mode.GROUP);
-
-                    // private
-                } else {
-                    bundle.putSerializable(ChatActivity.EXTRA_MODE, ChatActivity.Mode.PRIVATE);
-                }
-
-                // Open chat activity
-                //
-                ChatActivity.start(DialogsActivity.this, bundle);
-            }
-        });
-
+    void buildListView(List<QBDialog> dialogs) {
+        adapter.setDataSource(dialogs);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

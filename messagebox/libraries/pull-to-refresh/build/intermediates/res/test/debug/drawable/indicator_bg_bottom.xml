@@ -15,4 +15,4 @@
         android:topLeftRadius="@dimen/indicator_corner_radius"
         android:topRightRadius="@dimen/indicator_corner_radius" />
 
-</shape><!-- From: file:/C:/Users/LACA/workspace/ebay%20POD/Messagebox/Chat/messagebox/libraries/pull-to-refresh/res/drawable/indicator_bg_bottom.xml --><!-- From: file:/C:/Users/LACA/workspace/ebay%20POD/Messagebox/Chat/messagebox/libraries/pull-to-refresh/build/intermediates/bundles/debug/res/drawable/indicator_bg_bottom.xml -->
+</shape><!-- From: file:/C:/Users/jmalonsos/Desktop/RepositoriosGit/Messagebox/messagebox/libraries/pull-to-refresh/res/drawable/indicator_bg_bottom.xml --><!-- From: file:/C:/Users/jmalonsos/Desktop/RepositoriosGit/Messagebox/messagebox/libraries/pull-to-refresh/build/intermediates/bundles/debug/res/drawable/indicator_bg_bottom.xml -->

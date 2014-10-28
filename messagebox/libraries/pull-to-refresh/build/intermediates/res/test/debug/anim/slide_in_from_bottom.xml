@@ -19,4 +19,4 @@
     android:duration="@android:integer/config_longAnimTime"
     android:fromYDelta="100%p"
     android:toYDelta="0" />
-<!-- From: file:/C:/Users/LACA/workspace/ebay%20POD/Messagebox/Chat/messagebox/libraries/pull-to-refresh/res/anim/slide_in_from_bottom.xml --><!-- From: file:/C:/Users/LACA/workspace/ebay%20POD/Messagebox/Chat/messagebox/libraries/pull-to-refresh/build/intermediates/bundles/debug/res/anim/slide_in_from_bottom.xml -->
+<!-- From: file:/C:/Users/jmalonsos/Desktop/RepositoriosGit/Messagebox/messagebox/libraries/pull-to-refresh/res/anim/slide_in_from_bottom.xml --><!-- From: file:/C:/Users/jmalonsos/Desktop/RepositoriosGit/Messagebox/messagebox/libraries/pull-to-refresh/build/intermediates/bundles/debug/res/anim/slide_in_from_bottom.xml -->

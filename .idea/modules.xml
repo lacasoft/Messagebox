@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Chat.iml" filepath="$PROJECT_DIR$/Chat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Messagebox.iml" filepath="$PROJECT_DIR$/Messagebox.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/messagebox/messagebox.iml" filepath="$PROJECT_DIR$/messagebox/messagebox.iml" />
       <module fileurl="file://$PROJECT_DIR$/messagebox/libraries/pull-to-refresh/pull-to-refresh.iml" filepath="$PROJECT_DIR$/messagebox/libraries/pull-to-refresh/pull-to-refresh.iml" />

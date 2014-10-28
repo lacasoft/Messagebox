@@ -1,6 +1,8 @@
 package com.globant.message.box.ui.adapters;
 
 import android.app.Activity;
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,97 +22,86 @@ import com.globant.message.box.R;
 import java.util.Date;
 import java.util.List;
 
-public class DialogsAdapter extends BaseAdapter {
-
+public class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHolder> {
     private static final String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
-    private List<QBDialog> dataSource;
-    private LayoutInflater inflater;
-    private Activity ctx;
 
-    public DialogsAdapter(List<QBDialog> dataSource, Activity ctx) {
+    private Activity ctx;
+    private List<QBDialog> dataSource;
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView nameTextView;
+        public TextView unreadTextView;
+        public TextView dateSentTextView;
+        public TextView groupTypeTextView;
+        public TextView lastMessageTextView;
+
+        public ViewHolder(View view) {
+            super(view);
+
+            this.nameTextView = (TextView) view.findViewById(R.id.roomName);
+            this.unreadTextView = (TextView) view.findViewById(R.id.textViewUnread);
+            this.lastMessageTextView = (TextView) view.findViewById(R.id.lastMessage);
+            this.dateSentTextView = (TextView) view.findViewById(R.id.textViewDateSent);
+            this.groupTypeTextView = (TextView) view.findViewById(R.id.textViewGroupType);
+        }
+    }
+
+    public DialogsAdapter(List<QBDialog> dataSource, Activity context) {
+        this.ctx = context;
         this.dataSource = dataSource;
-        this.inflater = LayoutInflater.from(ctx);
-        this.ctx = ctx;
     }
 
     public List<QBDialog> getDataSource() {
         return dataSource;
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
+    public void setDataSource(List<QBDialog> dialogos) {
+        this.dataSource = dialogos;
     }
 
     @Override
-    public Object getItem(int position) {
-        return dataSource.get(position);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+        View view = LayoutInflater.
+                        from(parent.getContext()).
+                        inflate(R.layout.list_item_room, parent, false);
+
+        ViewHolder holder = new ViewHolder(view);
+
+        //view.setOnClickListener();
+
+        return holder;
     }
 
     @Override
-    public int getCount() {
-        return dataSource.size();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-
-        // init view
-        //
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item_room, null);
-            holder = new ViewHolder();
-            holder.name = (TextView)convertView.findViewById(R.id.roomName);
-            holder.lastMessage = (TextView)convertView.findViewById(R.id.lastMessage);
-            holder.groupType = (TextView)convertView.findViewById(R.id.textViewGroupType);
-            holder.dateSent = (TextView)convertView.findViewById(R.id.textViewDateSent);
-            holder.unread = (TextView)convertView.findViewById(R.id.textViewUnread);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        // set data
-        //
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
         QBDialog dialog = dataSource.get(position);
 
-        if(dialog.getType().equals(QBDialogType.GROUP)){
-            holder.name.setText(dialog.getName());
-        }else{
-            // get opponent name for private dialog
-            //
-            Integer opponentID = ((MessageboxSingleton)ctx.getApplication()).getOpponentIDForPrivateDialog(dialog);
-            QBUser user = ((MessageboxSingleton)ctx.getApplication()).getDialogsUsers().get(opponentID);
+        if (dialog.getType().equals(QBDialogType.GROUP)) {
+            viewHolder.nameTextView.setText(dialog.getName());
+        } else {
+            Integer opponentID = ((MessageboxSingleton) ctx.getApplication()).getOpponentIDForPrivateDialog(dialog);
+            QBUser user = ((MessageboxSingleton) ctx.getApplication()).getDialogsUsers().get(opponentID);
 
-            if(user != null){
-                holder.name.setText(user.getLogin() == null ? user.getFullName() : user.getLogin());
+            if (user != null) {
+                viewHolder.nameTextView.setText(user.getLogin() == null ? user.getFullName() : user.getLogin());
             }
         }
 
-        holder.lastMessage.setText(dialog.getLastMessage());
-        holder.groupType.setText(dialog.getType().toString());
+        viewHolder.lastMessageTextView.setText(dialog.getLastMessage());
+        viewHolder.dateSentTextView.setText(getTimeText(dialog.getLastMessageDateSent()).toString());
+        viewHolder.groupTypeTextView.setText(dialog.getType().toString());
+        viewHolder.unreadTextView.setText(dialog.getUnreadMessageCount().toString());
+    }
 
-        holder.dateSent.setText(getTimeText(dialog.getLastMessageDateSent()).toString());
-        holder.unread.setText(dialog.getUnreadMessageCount().toString());
-
-        return convertView;
+    @Override
+    public int getItemCount() {
+        return dataSource.size();
     }
 
     private String getTimeText(long dateTime) {
-            long time = dateTime * (long) 1000;
-            Date date = new Date(time);
+        long time = dateTime * (long) 1000;
+        Date date = new Date(time);
 
-            return DateFormat.format(DATE_FORMAT, date).toString();
-    }
-
-
-
-    private static class ViewHolder{
-        TextView name;
-        TextView lastMessage;
-        TextView groupType;
-        TextView dateSent;
-        TextView unread;
+        return DateFormat.format(DATE_FORMAT, date).toString();
     }
 }
