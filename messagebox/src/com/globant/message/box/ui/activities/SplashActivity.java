@@ -33,7 +33,7 @@ public class SplashActivity extends Activity {
     private static String USER_LOGIN = "";
     private static String USER_PASSWORD = "";
 
-    static final int AUTO_PRESENCE_INTERVAL_IN_SECONDS = 30;
+    static final int AUTO_PRESENCE_INTERVAL_IN_SECONDS = 60;
 
     private QBChatService chatService;
 
